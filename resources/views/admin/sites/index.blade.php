@@ -6,6 +6,7 @@
         <div class="w-full">
 
           <h1>My sites</h1>
+          <a href="{{ Request::url() }}/create" class="block">Create new site</a>
           <table class="table-fixed w-full text-left">
             <thead>
               <th>ID</th>

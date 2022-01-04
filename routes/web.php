@@ -16,9 +16,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::domain('{domain}.localhost')->group(function () {
-  Route::get('/', function ($domain) {
-      dd($domain);
-  });
+  Route::get('/', [SiteController::class, 'publicHome']);
 });
 
 Route::domain('localhost')->group(function () {

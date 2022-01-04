@@ -22,7 +22,7 @@ class SiteController extends Controller
         $sites = Site::where('user_id', $user->id)->get();
       }
 
-      return view('admin.mysites')->with('sites', $sites);
+      return view('admin.sites.index')->with('sites', $sites);
     }
 
     /**
@@ -33,6 +33,7 @@ class SiteController extends Controller
     public function create()
     {
         //
+        return view('admin.sites.create');
     }
 
     /**
@@ -43,7 +44,21 @@ class SiteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //dd("test");
+        $validated = $request->validate([
+          'title' => 'required|min:2|max:255',
+          'slug' => 'required|alpha_dash|min:2|max:255|unique:\App\Models\Site,slug',
+        ]);
+        
+        Site::create([
+          'title' => $request->input('title'),
+          'slug' => $request->input('slug'),
+          'description' => $request->input('description'),
+          'user_id' => Auth::user()->id,
+        ]);
+
+        return redirect("/admin/site");
+
     }
 
     /**
@@ -100,5 +115,15 @@ class SiteController extends Controller
       }
 
       return view('admin.mysites')->with('sites', $sites);
+    }
+
+    public function publicHome($site) {
+      $site = Site::where('slug', $site)->first();
+
+      if(!empty($site)) {
+        return view('sites.index')->with('site', $site);
+      }
+
+      abort(404);
     }
 }
