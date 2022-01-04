@@ -117,13 +117,13 @@ class SiteController extends Controller
       return view('admin.mysites')->with('sites', $sites);
     }
 
-    public function publicHome($site) {
-      $site = Site::where('slug', $site)->first();
-
+    public function publicHome($site, Request $request) {
+      $site = Site::find($request->attributes->get('site_id'));
+      
       if(!empty($site)) {
         return view('sites.index')->with('site', $site);
       }
 
-      abort(404);
+      return abort(404);
     }
 }

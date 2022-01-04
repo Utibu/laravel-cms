@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminDashboard;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -15,8 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::domain('{domain}.localhost')->group(function () {
+Route::domain('{domain}.localhost')->middleware(['App\Http\Middleware\CheckSiteValidity'])->group(function () {
   Route::get('/', [SiteController::class, 'publicHome']);
+  Route::get('/{slug}', [PostController::class, 'showPost']);
 });
 
 Route::domain('localhost')->group(function () {
