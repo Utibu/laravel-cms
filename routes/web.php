@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\AdminDashboard;
 use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +15,23 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::domain('{domain}.localhost')->group(function () {
+  Route::get('/', function ($domain) {
+      dd($domain);
+  });
+});
+
+Route::domain('localhost')->group(function () {
+  Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+  Route::prefix('admin')->middleware(['auth'])->group(function() {
+    Route::get('/', [AdminDashboard::class, 'index']);
+    Route::resource('/site', SiteController::class);
+  });
+});
+
+
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -21,4 +39,4 @@ Auth::routes();
 
 Route::get('/home', [\App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
-Route::resource('/site', SiteController::class);
+

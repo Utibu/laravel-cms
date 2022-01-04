@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Site;
+use Auth;
 use Illuminate\Http\Request;
 
 class SiteController extends Controller
@@ -14,10 +15,14 @@ class SiteController extends Controller
      */
     public function index()
     {
-        //
-        $sites = Site::all();
+      $sites = [];
 
-        dd($sites);
+      if(Auth::user()) {
+        $user = Auth::user();
+        $sites = Site::where('user_id', $user->id)->get();
+      }
+
+      return view('admin.mysites')->with('sites', $sites);
     }
 
     /**
@@ -84,5 +89,16 @@ class SiteController extends Controller
     public function destroy(Site $site)
     {
         //
+    }
+
+    public function mySites() {
+      $sites = [];
+
+      if(Auth::user()) {
+        $user = Auth::user();
+        $sites = Site::where('user_id', $user->id)->get();
+      }
+
+      return view('admin.mysites')->with('sites', $sites);
     }
 }
