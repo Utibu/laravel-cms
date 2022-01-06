@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\Sections\TextSection;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -25,6 +26,11 @@ class PostController extends Controller
     public function create()
     {
         //
+        $sections = [
+          new TextSection()
+        ];
+
+        return view('admin.post.create')->with('sections', $sections);
     }
 
     /**
@@ -36,6 +42,7 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //
+        dd($request->input('section'));
     }
 
     /**

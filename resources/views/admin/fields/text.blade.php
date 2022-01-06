@@ -1,0 +1,1 @@
+<input type="text" name="{{ $key }}" placeholder="Text" />

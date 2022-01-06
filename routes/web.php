@@ -18,7 +18,15 @@ use Illuminate\Support\Facades\Route;
 
 Route::domain('{domain}.localhost')->middleware(['App\Http\Middleware\CheckSiteValidity'])->group(function () {
   Route::get('/', [SiteController::class, 'publicHome']);
+  Auth::routes();
+
+
   Route::get('/{slug}', [PostController::class, 'showPost']);
+
+  Route::prefix('admin')->middleware(['auth'])->group(function() {
+    Route::get('/', [AdminDashboard::class, 'index']);
+    Route::resource('/post', PostController::class);
+  });
 });
 
 Route::domain('localhost')->group(function () {
